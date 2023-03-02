@@ -8,7 +8,11 @@ public class User {
 
     @Id
     @Column(name = "user_id")
+<<<<<<< HEAD
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+=======
+    @GeneratedValue(strategy = GenerationType.AUTO)
+>>>>>>> 59935033e8cf01467ef08909aa24556e6fce870b
     private int Id;
 
     @Column(name = "username")

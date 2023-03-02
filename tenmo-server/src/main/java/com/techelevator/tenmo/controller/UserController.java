@@ -17,8 +17,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
+<<<<<<< HEAD
     public UserController() { }
 
+=======
+>>>>>>> 59935033e8cf01467ef08909aa24556e6fce870b
     @RequestMapping(method = RequestMethod.GET)
     public List<User> getAllUsers() {
         return userService.getAllUsers();
