@@ -1,9 +1,11 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleService {
@@ -88,4 +90,51 @@ public class ConsoleService {
         System.out.println("An error occurred. Check the log for details.");
     }
 
+    public int checkUserId(String prompt, List<User> users, int currentUserId) {
+        while (true) {
+
+            System.out.print(prompt);
+            if(!scanner.hasNextInt()) {
+                System.out.println("Input must be a number.");
+                scanner.nextLine();
+                continue;
+            }
+
+            int userId = Integer.parseInt(scanner.nextLine());
+            if(userId == 0) return 0;
+
+            if(userId == currentUserId) {
+                System.out.println("You can not select your ID.");
+                continue;
+            }
+
+            User user = users.stream().filter(u -> u.getId() == userId).findFirst().orElse(null);
+            if(user == null) {
+                System.out.println("Invalid ID.");
+                continue;
+            }
+            return userId;
+        }
+    }
+
+    public BigDecimal checkAmount(String prompt, BigDecimal balance) {
+        while (true) {
+
+            System.out.print(prompt);
+            if(!scanner.hasNextBigDecimal()) {
+                System.out.println("Input must be a number.");
+                scanner.nextLine();
+                continue;
+            }
+
+            BigDecimal amount = new BigDecimal(scanner.nextLine());
+
+            if(amount.compareTo(balance) > 0 || amount.equals(BigDecimal.ZERO)) {
+                System.out.println("Invalid amount.");
+                continue;
+            }
+
+            return amount;
+        }
+    }
 }
