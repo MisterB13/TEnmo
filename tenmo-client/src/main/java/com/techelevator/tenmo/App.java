@@ -4,7 +4,18 @@ import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
+<<<<<<< HEAD
 import com.techelevator.tenmo.services.*;
+=======
+<<<<<<< HEAD
+import com.techelevator.tenmo.services.*;
+=======
+import com.techelevator.tenmo.services.AccountService;
+import com.techelevator.tenmo.services.AuthenticationService;
+import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.tenmo.services.UserService;
+>>>>>>> 59935033e8cf01467ef08909aa24556e6fce870b
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,8 +31,16 @@ public class App {
 
     private final UserService userService = new UserService();
 
+<<<<<<< HEAD
     private final TransferService transferService = new TransferService();
 
+=======
+<<<<<<< HEAD
+    private final TransferService transferService = new TransferService();
+
+=======
+>>>>>>> 59935033e8cf01467ef08909aa24556e6fce870b
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
     private AuthenticatedUser currentUser;
 
     public static void main(String[] args) {
@@ -95,21 +114,69 @@ public class App {
         }
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
     private void viewCurrentBalance() {
         int id = currentUser.getUser().getId();
         Account account = accountService.getUserAccount(id);
         if (account != null)
             System.out.println("Your current account balance is: $" + account.getBalance());
     }
+<<<<<<< HEAD
+=======
+=======
+	private void viewCurrentBalance() {
+        int id = currentUser.getUser().getId();
+        Account account = accountService.getUserAccount(id);
+        if(account != null)
+            System.out.println("Your current account balance is: $" + account.getBalance());
+	}
+>>>>>>> 59935033e8cf01467ef08909aa24556e6fce870b
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
 
     private void viewTransferHistory() {
         // TODO Auto-generated method stub
 
     }
 
+<<<<<<< HEAD
     private void viewPendingRequests() {
         // TODO Auto-generated method stub
 
+=======
+<<<<<<< HEAD
+    private void viewPendingRequests() {
+        // TODO Auto-generated method stub
+=======
+	private void sendBucks() {
+        List<User> users = userService.getAllUsers();
+
+        if(users != null) {
+
+            System.out.println("-------------------------------------------");
+            System.out.println("Users");
+            System.out.println("ID          Name");
+            System.out.println("-------------------------------------------");
+
+            for (User user :
+                    users) {
+                System.out.println(user.getId() + "        " + user.getUsername());
+            }
+            System.out.println("---------" + System.lineSeparator());
+
+            int Id = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel): ");
+            BigDecimal amount = consoleService.promptForBigDecimal("Enter amount: ");
+
+            System.out.println("Id: " + Id + " Amount: " + amount);
+        }
+
+		
+	}
+>>>>>>> 59935033e8cf01467ef08909aa24556e6fce870b
+
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
     }
 
     private void sendBucks() {
@@ -135,6 +202,7 @@ public class App {
 
                 BigDecimal amount = consoleService.checkAmount("Enter amount: ", balance);
 
+<<<<<<< HEAD
                 BigDecimal userBalance = accountService.getUserAccount(transferUserId).getBalance();
 
                 BigDecimal transactionBalance = amount.add(userBalance);
@@ -144,6 +212,9 @@ public class App {
 
 
                 System.out.println("Id: " + transferUserId + " Amount: " + amount +  " Your Balance:  " +  yourBalanceAfterTransaction + " Users Amount: " + transactionBalance);
+=======
+                System.out.println("Id: " + transferUserId + " Amount: " + amount);
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
             }
         }
     }

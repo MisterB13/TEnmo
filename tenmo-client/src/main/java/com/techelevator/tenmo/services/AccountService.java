@@ -9,21 +9,49 @@ import org.springframework.web.client.RestTemplate;
 
 public class AccountService {
 
+<<<<<<< HEAD
     private final String API_BASE_URL = "http://localhost:8080/account/";
+=======
+<<<<<<< HEAD
+    private final String API_BASE_URL = "http://localhost:8080/account/";
+=======
+    private final String ACCOUNT_API_URL = "http://localhost:8080/account/";
+>>>>>>> 59935033e8cf01467ef08909aa24556e6fce870b
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
     private final RestTemplate restTemplate = new RestTemplate();
 
     public AccountService() { }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
     public Account getUserAccount(int userId) {
 
         Account account = null;
 
+<<<<<<< HEAD
+=======
+=======
+    public Account getUserAccount(int id) {
+
+        Account account = null;
+>>>>>>> 59935033e8cf01467ef08909aa24556e6fce870b
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<Void> entity = new HttpEntity<>(headers);
 
+<<<<<<< HEAD
             ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL + userId, HttpMethod.GET, entity, Account.class);
+=======
+<<<<<<< HEAD
+            ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL + userId, HttpMethod.GET, entity, Account.class);
+=======
+            ResponseEntity<Account> response = restTemplate.exchange(ACCOUNT_API_URL + id, HttpMethod.GET, entity, Account.class);
+>>>>>>> 59935033e8cf01467ef08909aa24556e6fce870b
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
 
             account = response.getBody();
 
@@ -32,6 +60,10 @@ public class AccountService {
         }
         return account;
     }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
 
     public Account updateAccountBalance(Account account) {
 
@@ -53,4 +85,9 @@ public class AccountService {
         }
         return updatedAccount;
     }
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 59935033e8cf01467ef08909aa24556e6fce870b
+>>>>>>> fdc0452dc5e2f1936c7107dbec74f55ea9041d8b
 }
