@@ -1,0 +1,7 @@
+2023-02-27T15:31:12.5111832 401 : [no body]
+2023-02-27T15:31:19.7745203 401 : [no body]
+2023-02-27T15:31:26.036403 401 : [no body]
+2023-02-27T15:31:48.0257527 401 : [no body]
+2023-02-27T15:32:54.637164 401 : [no body]
+2023-02-27T15:33:00.6529585 500 : [{"timestamp":"2023-02-27T22:33:00.648+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; SQL [INSERT INTO tenmo_user (username, password_hash) VALUES (?, ?) RETU... (524 bytes)]
+2023-02-27T17:02:44.7006496 404 : [{"timestamp":"2023-02-28T00:02:44.687+00:00","status":404,"error":"Not Found","message":"No message available","path":"/account1003"}]

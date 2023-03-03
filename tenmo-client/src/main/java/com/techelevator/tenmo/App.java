@@ -1,9 +1,13 @@
 package com.techelevator.tenmo;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
-import com.techelevator.tenmo.services.AuthenticationService;
-import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.tenmo.services.*;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 public class App {
 
@@ -11,6 +15,12 @@ public class App {
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
+
+    private final AccountService accountService = new AccountService();
+
+    private final UserService userService = new UserService();
+
+    private final TransferService transferService = new TransferService();
 
     private AuthenticatedUser currentUser;
 
@@ -26,6 +36,7 @@ public class App {
             mainMenu();
         }
     }
+
     private void loginMenu() {
         int menuSelection = -1;
         while (menuSelection != 0 && currentUser == null) {
@@ -84,29 +95,62 @@ public class App {
         }
     }
 
-	private void viewCurrentBalance() {
-		// TODO Auto-generated method stub
-		
-	}
+    private void viewCurrentBalance() {
+        int id = currentUser.getUser().getId();
+        Account account = accountService.getUserAccount(id);
+        if (account != null)
+            System.out.println("Your current account balance is: $" + account.getBalance());
+    }
 
-	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
-		
-	}
+    private void viewTransferHistory() {
+        // TODO Auto-generated method stub
 
-	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	private void sendBucks() {
-		// TODO Auto-generated method stub
-		
-	}
+    private void viewPendingRequests() {
+        // TODO Auto-generated method stub
 
-	private void requestBucks() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
+
+    private void sendBucks() {
+        List<User> users = userService.getAllUsers();
+
+        if (users != null) {
+
+            System.out.println("-------------------------------------------");
+            System.out.println("Users");
+            System.out.println("ID          Name");
+            System.out.println("-------------------------------------------");
+
+            for (User user :
+                    users) {
+                System.out.println(user.getId() + "        " + user.getUsername());
+            }
+            System.out.println("---------" + System.lineSeparator());
+
+            int transferUserId = consoleService.checkUserId("Enter ID of user you are sending to (0 to cancel): ", users, currentUser.getUser().getId());
+
+            if (transferUserId != 0) {
+                BigDecimal balance = accountService.getUserAccount(currentUser.getUser().getId()).getBalance();
+
+                BigDecimal amount = consoleService.checkAmount("Enter amount: ", balance);
+
+                BigDecimal userBalance = accountService.getUserAccount(transferUserId).getBalance();
+
+                BigDecimal transactionBalance = amount.add(userBalance);
+
+                BigDecimal yourBalanceAfterTransaction = userBalance.subtract(amount);
+
+
+
+                System.out.println("Id: " + transferUserId + " Amount: " + amount +  " Your Balance:  " +  yourBalanceAfterTransaction + " Users Amount: " + transactionBalance);
+            }
+        }
+    }
+
+    private void requestBucks() {
+        // TODO Auto-generated method stub
+
+    }
 
 }
