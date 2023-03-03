@@ -1,11 +1,11 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.entities.Transfer;
+import com.techelevator.tenmo.exceptions.InvalidResourceException;
+import com.techelevator.tenmo.exceptions.ResourceNotFoundException;
 import com.techelevator.tenmo.repositories.TransferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -18,26 +18,29 @@ public class TransferService {
 
     public Transfer createTransfer(Transfer transfer) {
         if(transfer == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid Transfer");
-        } else {
-            transferRepository.save(transfer);
-            return transfer;
+            throw new InvalidResourceException("Transfer was null");
         }
+
+        transferRepository.save(transfer);
+        return transfer;
+
     }
 
     public Transfer getTransferById(int transferId) {
-        if(transferId == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid Transfer ID");
+        Transfer transfer = transferRepository.findById(transferId);
+        if(transfer == null) {
+            throw new ResourceNotFoundException("Account Not Found for Transfer ID: " + transferId);
         }
 
-        return transferRepository.findById(transferId);
+        return transfer;
     }
 
     public List<Transfer> getTransfersByAccount(int accountId) {
-        if(accountId == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid Account ID");
+        List<Transfer> transfers = transferRepository.getAccountHistory(accountId);
+        if(transfers == null) {
+            throw new ResourceNotFoundException("Transfer History Not Found for Account ID: " + accountId);
         }
 
-        return transferRepository.getAccountHistory(accountId);
+        return transfers;
     }
 }

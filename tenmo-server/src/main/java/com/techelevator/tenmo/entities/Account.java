@@ -1,6 +1,8 @@
 package com.techelevator.tenmo.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 
@@ -14,9 +16,11 @@ public class Account {
     private int id;
 
     @Column(name = "user_id")
+    @NotBlank(message = "User ID is required.")
     private int userId;
 
     @Column(name = "balance")
+    @NotNull(message = "Balance is required.")
     private BigDecimal balance;
 
 

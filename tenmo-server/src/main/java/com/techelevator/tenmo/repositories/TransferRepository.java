@@ -14,7 +14,5 @@ public interface TransferRepository extends JpaRepository<Transfer, Integer> {
     Transfer findById(int transferId);
     @Query(value = "SELECT * FROM transfer t WHERE t.account_from = ?1 OR t.account_to = ?1", nativeQuery = true)
     List<Transfer> getAccountHistory(int id);
-//    @Query(value = "SELECT * FROM transfer t WHERE t.account_from = :id OR t.account_to = :id", nativeQuery = true)
-//    List<Transfer> history(@Param("id") int id);
 
 }

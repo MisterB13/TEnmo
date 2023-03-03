@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(path = "/account")
 public class AccountController {
@@ -16,13 +18,13 @@ public class AccountController {
     public AccountController() { }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public Account getUserAccount(@PathVariable("id") int userId) {
+    public Account getUserAccount(@Valid @PathVariable("id") int userId) {
         return accountService.getUserAccount(userId);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.PUT)
-    public Account updateUserAccount(@RequestBody Account account) {
+    public Account updateUserAccount(@Valid @RequestBody Account account) {
         return accountService.updateAccountBalance(account);
     }
 }

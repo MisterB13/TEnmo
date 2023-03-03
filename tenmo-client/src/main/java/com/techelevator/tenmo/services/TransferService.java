@@ -11,25 +11,19 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class TransferService {
 
     private final String API_BASE_URL = "http://localhost:8080/transfer/";
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String ACCOUNT_ID = "accountId";
 
     public TransferService() { }
 
     public Transfer createTransfer(Transfer transfer) {
          Transfer createTransfer = null;
           try {
-//              HttpHeaders headers = new HttpHeaders();
-//              headers.setContentType(MediaType.APPLICATION_JSON);
-
-//              HttpEntity<Transfer> entity = new HttpEntity<>(transfer, headers);
-
-              ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL, HttpMethod.POST, createTransferEntity(transfer), Transfer.class);
-
+              ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL, HttpMethod.POST, HttpEntityService.createGenericEntity(transfer), Transfer.class);
               createTransfer = response.getBody();
 
           } catch (RestClientResponseException | ResourceAccessException e) {
@@ -44,12 +38,7 @@ public class TransferService {
         Transfer transfer = null;
 
         try {
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.APPLICATION_JSON);
-//            HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId, HttpMethod.GET, createAuthEntity(), Transfer.class);
-
+            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId, HttpMethod.GET, HttpEntityService.createAuthEntity(), Transfer.class);
             transfer = response.getBody();
 
         } catch (RestClientResponseException | ResourceAccessException e) {
@@ -62,32 +51,14 @@ public class TransferService {
         List<Transfer> transfers = null;
 
         try {
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.APPLICATION_JSON);
-//            HttpEntity<Void> entity = new HttpEntity<>(headers);
+            URI uri = UriComponentsBuilder.fromUri(URI.create(API_BASE_URL)).queryParam("accountId", accountId).build().toUri();
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(uri, HttpMethod.GET, HttpEntityService.createAuthEntity(), Transfer[].class);
 
-            URI uri = UriComponentsBuilder.fromUri(URI.create(API_BASE_URL)).queryParam(ACCOUNT_ID, accountId).build().toUri();
-
-            ResponseEntity<Transfer[]> response = restTemplate.exchange(uri, HttpMethod.GET, createAuthEntity(), Transfer[].class);
-
-            transfers = Arrays.asList(response.getBody());
+            transfers = Arrays.asList(Objects.requireNonNull(response.getBody()));
 
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
         return transfers;
     }
-
-    public HttpEntity<Transfer> createTransferEntity(Transfer transfer) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(transfer, headers);
-    }
-
-    public HttpEntity<Void> createAuthEntity() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(headers);
-    }
-
 }

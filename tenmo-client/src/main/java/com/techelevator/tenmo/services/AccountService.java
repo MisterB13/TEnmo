@@ -18,12 +18,7 @@ public class AccountService {
         Account account = null;
 
         try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-            ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL + userId, HttpMethod.GET, entity, Account.class);
-
+            ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL + userId, HttpMethod.GET, HttpEntityService.createAuthEntity(), Account.class);
             account = response.getBody();
 
         } catch (RestClientResponseException | ResourceAccessException e) {
@@ -38,12 +33,7 @@ public class AccountService {
         try {
 
             if(account != null) {
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                HttpEntity<Account> entity = new HttpEntity<>(account, headers);
-
-                ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL, HttpMethod.PUT, entity, Account.class);
-
+                ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL, HttpMethod.PUT, HttpEntityService.createGenericEntity(account), Account.class);
                 updatedAccount = response.getBody();
             }
 

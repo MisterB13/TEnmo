@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,20 +18,19 @@ public class TransferController {
 
     public TransferController() { }
 
-    @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<Transfer> getAll(@RequestParam(defaultValue = "0") int accountId) {
-        System.out.println(accountId);
+    @GetMapping
+    public List<Transfer> getAll(@Valid @RequestParam(defaultValue = "0") int accountId) {
         return transferService.getTransfersByAccount(accountId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "", method = RequestMethod.POST)
-    public Transfer create(@RequestBody Transfer transfer) {
+    @PostMapping
+    public Transfer create(@Valid @RequestBody Transfer transfer) {
         return transferService.createTransfer(transfer);
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public Transfer get(@PathVariable("id") int transferId) {
+    @GetMapping(path = "/{id}")
+    public Transfer get(@Valid @PathVariable("id") int transferId) {
         return transferService.getTransferById(transferId);
     }
 
