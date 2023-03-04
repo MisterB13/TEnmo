@@ -133,7 +133,6 @@ public class ConsoleService {
                 System.out.println("Invalid amount.");
                 continue;
             }
-
             return amount;
         }
     }
