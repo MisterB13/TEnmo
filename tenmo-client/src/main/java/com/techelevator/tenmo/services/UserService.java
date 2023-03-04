@@ -22,11 +22,8 @@ public class UserService {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-            ResponseEntity<User[]> response = restTemplate.exchange(ACCOUNT_API_URL, HttpMethod.GET, entity, User[].class);
+            ResponseEntity<User[]> response = restTemplate.exchange(ACCOUNT_API_URL, HttpMethod.GET, HttpEntityService.createAuthEntity(), User[].class);
 
             users = Arrays.asList(response.getBody());
 

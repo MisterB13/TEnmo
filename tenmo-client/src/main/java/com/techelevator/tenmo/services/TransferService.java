@@ -18,7 +18,10 @@ public class TransferService {
     private final String API_BASE_URL = "http://localhost:8080/transfer/";
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public TransferService() { }
+    private String token;
+
+    public TransferService() {
+    }
 
     public Transfer createTransfer(Transfer transfer) {
          Transfer createTransfer = null;

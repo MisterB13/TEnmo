@@ -4,6 +4,7 @@ import com.techelevator.tenmo.entities.Transfer;
 import com.techelevator.tenmo.services.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/transfer")
+@PreAuthorize("isAuthenticated()")
 public class TransferController {
 
     @Autowired
