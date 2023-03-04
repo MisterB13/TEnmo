@@ -15,7 +15,7 @@ public class User {
     private int Id;
 
     @Column(name = "username")
-    @NotNull(message = "name can not be null.")
+    @NotNull(message = "Username is required.")
     private String username;
 
     public int getId() {

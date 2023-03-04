@@ -18,8 +18,6 @@ public class TransferService {
     private final String API_BASE_URL = "http://localhost:8080/transfer/";
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private String token;
-
     public TransferService() {
     }
 
@@ -32,14 +30,12 @@ public class TransferService {
           } catch (RestClientResponseException | ResourceAccessException e) {
               BasicLogger.log(e.getMessage());
           }
-
           return createTransfer;
     }
 
 
     public Transfer getTransfer(int transferId) {
         Transfer transfer = null;
-
         try {
             ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId, HttpMethod.GET, HttpEntityService.createAuthEntity(), Transfer.class);
             transfer = response.getBody();
@@ -52,7 +48,6 @@ public class TransferService {
 
     public List<Transfer> getTransferHistory(int accountId) {
         List<Transfer> transfers = null;
-
         try {
             URI uri = UriComponentsBuilder.fromUri(URI.create(API_BASE_URL)).queryParam("accountId", accountId).build().toUri();
             ResponseEntity<Transfer[]> response = restTemplate.exchange(uri, HttpMethod.GET, HttpEntityService.createAuthEntity(), Transfer[].class);

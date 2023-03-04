@@ -22,9 +22,7 @@ public class UserService {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         try {
-
             ResponseEntity<User[]> response = restTemplate.exchange(ACCOUNT_API_URL, HttpMethod.GET, HttpEntityService.createAuthEntity(), User[].class);
-
             users = Arrays.asList(response.getBody());
 
         } catch (RestClientResponseException | ResourceAccessException e) {
