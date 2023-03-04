@@ -1,7 +1,6 @@
 package com.techelevator.tenmo.entities;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -15,19 +14,19 @@ public class Transfer {
     private int id;
 
     @Column(name = "transfer_type_id")
-    @NotBlank(message = "Transfer Type is required.")
+    @NotNull(message = "Transfer Type is required.")
     private int transferTypeId;
 
     @Column(name = "transfer_status_id")
-    @NotBlank(message = "Transfer Status is required.")
+    @NotNull(message = "Transfer Status is required.")
     private int transferStatusId;
 
     @Column(name = "account_from")
-    @NotBlank(message = "Sending Account ID is required.")
+    @NotNull(message = "Sending Account ID is required.")
     private int accountFromId;
 
     @Column(name = "account_to")
-    @NotBlank(message = "Receiving Account ID is required ")
+    @NotNull(message = "Receiving Account ID is required ")
     private int accountToId;
 
     @Column(name = "amount")

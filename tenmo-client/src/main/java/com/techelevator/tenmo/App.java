@@ -69,7 +69,8 @@ public class App {
     private void handleLogin() {
         UserCredentials credentials = consoleService.promptForCredentials();
         currentUser = authenticationService.login(credentials);
-        HttpEntityService.setToken(currentUser.getToken());
+        if(currentUser != null)
+            HttpEntityService.setToken(currentUser.getToken());
         if (currentUser == null) {
             consoleService.printErrorMessage();
         }
@@ -153,6 +154,53 @@ public class App {
     private void requestBucks() {
         // TODO Auto-generated method stub
 
+    }
+
+    private void sendBuckss() {
+        List<User> users = userService.getAllUsers();
+
+        if (users != null) {
+            printUserList(users);
+            int transferUserId = consoleService.checkUserId("Enter ID of user you are sending to (0 to cancel): ", users, currentUser.getUser().getId());
+
+            if (transferUserId != 0) {
+
+                BigDecimal balance = accountService.getUserAccount(currentUser.getUser().getId()).getBalance();
+                BigDecimal amountToTransfer = consoleService.checkAmount("Enter amount: ", balance);
+
+                Account userAccount = accountService.getUserAccount(currentUser.getUser().getId());
+                Account accountToTransfer = accountService.getUserAccount(transferUserId);
+
+                System.out.printf("User Balance: %s  Transfer Balance: %s\n", userAccount.getBalance(), accountToTransfer.getBalance());
+
+                userAccount.setBalance(userAccount.getBalance().subtract(amountToTransfer));
+                accountToTransfer.setBalance(accountToTransfer.getBalance().add(amountToTransfer));
+
+                System.out.printf("New User Balance: %s  New Transfer Balance: %s\n", userAccount.getBalance(), accountToTransfer.getBalance());
+
+                Account updatedUserAccount = accountService.updateAccountBalance(userAccount);
+                if(updatedUserAccount == null)
+                    System.out.println("Transfer was unsuccessful for user account.");
+
+                Account updatedTransferAccount = accountService.updateAccountBalance(accountToTransfer);
+                if(updatedTransferAccount == null)
+                    System.out.println("Transfer was unsuccessful for transfer account.");
+
+                System.out.printf("User Balance: %s  Transfer Balance: %s\n", updatedUserAccount.getBalance(), updatedTransferAccount.getBalance());
+            }
+        }
+    }
+
+    private void printUserList(List<User> users) {
+            System.out.println("-------------------------------------------");
+            System.out.println("Users");
+            System.out.println("ID          Name");
+            System.out.println("-------------------------------------------");
+
+            for (User user : users)
+                System.out.printf("%-11S %s\n", user.getId(), user.getUsername());
+
+            System.out.println("---------" + System.lineSeparator());
     }
 
 }

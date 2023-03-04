@@ -16,8 +16,8 @@ public class AccountService {
     public Account getUserAccount(int userId) {
 
         Account account = null;
-
         try {
+            System.out.println("getUserAccount activated.");
             ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL + userId, HttpMethod.GET, HttpEntityService.createAuthEntity(), Account.class);
             account = response.getBody();
 

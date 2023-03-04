@@ -5,7 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 public class HttpEntityService {
-    private static String token;
+    private static String token = "";
     public HttpEntityService() { }
 
     public static void setToken(String token) {

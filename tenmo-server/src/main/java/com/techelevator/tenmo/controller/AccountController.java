@@ -20,13 +20,15 @@ public class AccountController {
     public AccountController() { }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public Account getUserAccount(@Valid @PathVariable("id") int userId) {
+    public Account getUserAccount(@PathVariable("id") int userId) {
+        System.out.println("getUserAccount successful!");
         return accountService.getUserAccount(userId);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.PUT)
     public Account updateUserAccount(@Valid @RequestBody Account account) {
+        System.out.println("updateUserAccount successful!");
         return accountService.updateAccountBalance(account);
     }
 }

@@ -2,7 +2,6 @@ package com.techelevator.tenmo.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tenmo_user")
@@ -10,12 +9,11 @@ public class User {
 
     @Id
     @Column(name = "user_id")
-    @NotBlank(message = "User ID is required.")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
 
     @Column(name = "username")
-    @NotNull(message = "Username is required.")
+    @NotBlank(message = "Username is required.")
     private String username;
 
     public int getId() {
