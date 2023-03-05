@@ -25,6 +25,10 @@ public class Transfer {
         return Id;
     }
 
+    public void setId(int id) {
+        Id = id;
+    }
+
     public int getTransferTypeId() {
         return transferTypeId;
     }

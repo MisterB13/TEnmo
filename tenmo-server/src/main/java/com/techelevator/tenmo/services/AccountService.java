@@ -25,7 +25,7 @@ public class AccountService {
     public Account getUserAccount(int userId) {
         Account account = accountRepository.findByUserId(userId);
         if(account == null) {
-            throw new ResourceNotFoundException("Account Not Found for User ID: " + account.getUserId());
+            throw new ResourceNotFoundException("Account Not Found for User ID: " + userId);
         }
         return account;
     }
@@ -62,7 +62,6 @@ public class AccountService {
         transfer.setAmount(transactionDto.getAmount());
 
         Transfer transferCompleted = transferService.createTransfer(transfer);
-        System.out.println(transferCompleted.getId());
         return true;
     }
 }

@@ -1,14 +1,9 @@
 package com.techelevator.tenmo;
 
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.AuthenticatedUser;
-import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.*;
+import com.techelevator.tenmo.model.dto.TransferDto;
 import com.techelevator.tenmo.services.*;
-import com.techelevator.tenmo.services.AccountService;
-import com.techelevator.tenmo.services.AuthenticationService;
-import com.techelevator.tenmo.services.ConsoleService;
-import com.techelevator.tenmo.services.UserService;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -109,7 +104,6 @@ public class App {
 
     private void viewTransferHistory() {
         // TODO Auto-generated method stub
-
     }
 
     private void viewPendingRequests() {
@@ -201,6 +195,25 @@ public class App {
                 System.out.printf("%-11S %s\n", user.getId(), user.getUsername());
 
             System.out.println("---------" + System.lineSeparator());
+    }
+
+    private void viewTransferHistoryy() {
+        Account myAccount = accountService.getUserAccount(currentUser.getUser().getId());
+        List<TransferDto> transfers = transferService.getTransferDtoHistory(myAccount.getId());
+
+        System.out.println("-------------------------------------------");
+        System.out.println("Transfers");
+        System.out.println("ID          From/To                 Amount");
+        System.out.println("-------------------------------------------");
+
+        for (TransferDto transfer : transfers) {
+            System.out.printf("%-11s %s %-17s $%.2f\n", transfer.getId(),
+                    transfer.getAccountFrom().getId() == myAccount.getId() ? "To:  " : "From:",
+                    transfer.getAccountFrom().getUserId() != currentUser.getUser().getId() ? transfer.getAccountFrom().getUserName() : transfer.getAccountTo().getUserName(),
+                    transfer.getAmount());
+        }
+
+
     }
 
 }

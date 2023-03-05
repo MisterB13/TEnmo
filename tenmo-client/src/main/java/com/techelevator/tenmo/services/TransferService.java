@@ -1,8 +1,10 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.dto.TransferDto;
 import com.techelevator.util.BasicLogger;
-import org.springframework.http.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
@@ -50,9 +52,22 @@ public class TransferService {
         List<Transfer> transfers = null;
         try {
             URI uri = UriComponentsBuilder.fromUri(URI.create(API_BASE_URL)).queryParam("accountId", accountId).build().toUri();
-            ResponseEntity<Transfer[]> response = restTemplate.exchange(uri, HttpMethod.GET, HttpEntityService.createAuthEntity(), Transfer[].class);
+          ResponseEntity<Transfer[]> response = restTemplate.exchange(uri, HttpMethod.GET, HttpEntityService.createAuthEntity(), Transfer[].class);
+          transfers = Arrays.asList(Objects.requireNonNull(response.getBody()));
 
-            transfers = Arrays.asList(Objects.requireNonNull(response.getBody()));
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return transfers;
+    }
+
+    public List<TransferDto> getTransferDtoHistory(int accountId) {
+        List<TransferDto> transfers = null;
+        try {
+            URI uri = UriComponentsBuilder.fromUri(URI.create(API_BASE_URL + "dto/")).queryParam("accountId", accountId).build().toUri();
+
+            ResponseEntity<TransferDto[]> response = restTemplate.exchange(uri, HttpMethod.GET, HttpEntityService.createAuthEntity(), TransferDto[].class);
+            transfers = Arrays.asList(Objects.requireNonNull(response.getBody())) ;
 
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());

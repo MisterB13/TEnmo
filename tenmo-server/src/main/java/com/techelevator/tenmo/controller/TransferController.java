@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.entities.Transfer;
+import com.techelevator.tenmo.model.TransferDto;
 import com.techelevator.tenmo.services.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,10 @@ public class TransferController {
 
     public TransferController() { }
 
+    @GetMapping(path = "/dto")
+    public List<TransferDto> getAllDtos(@Valid @RequestParam(defaultValue = "0") int accountId) {
+        return transferService.getTransferDtosByAccount(accountId);
+    }
     @GetMapping
     public List<Transfer> getAll(@Valid @RequestParam(defaultValue = "0") int accountId) {
         return transferService.getTransfersByAccount(accountId);
