@@ -74,4 +74,18 @@ public class TransferService {
         }
         return transfers;
     }
+
+    public Transfer getCurrentUserTransferById(int transferId) {
+        Transfer transfer = null;
+        try {
+            ResponseEntity<Transfer> response =
+                    restTemplate.exchange(API_BASE_URL + "transfers/my-transfers/" + transferId, HttpMethod.GET,
+                            HttpEntityService.createAuthEntity(), Transfer.class);
+
+            transfer = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            System.out.println("Transfer pull failed.");
+        }
+        return transfer;
+    }
 }

@@ -7,6 +7,8 @@ import com.techelevator.tenmo.services.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static java.lang.System.out;
+
 public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
@@ -103,7 +105,71 @@ public class App {
 	}
 
     private void viewTransferHistory() {
-        // TODO Auto-generated method stub
+        Account myAccount = accountService.getUserAccount(currentUser.getUser().getId());
+        List<TransferDto> transfers = transferService.getTransferDtoHistory(myAccount.getId());
+
+        System.out.println("--------------------------------");
+        System.out.println("Transfers");
+        System.out.println("ID         From/To        Amount");
+        System.out.println("--------------------------------");
+
+        for (TransferDto transfer : transfers) {
+            int accountFromId = transfer.getAccountFrom().getId();
+            String accountFromUsername = transfer.getAccountFrom().getUserName();
+            int accountToId = transfer.getAccountTo().getId();
+            String accountToUsername = transfer.getAccountTo().getUserName();
+
+            System.out.println(transfer.getId() + "\t\t"  + accountFromUsername + "/" +
+                    accountToUsername + "         " + transfer.getAmount());
+        }
+        System.out.println("---------");
+        System.out.println();
+
+        boolean isTransferIdValid = false;
+        int requestedTransferId;
+
+        while(true) {
+            requestedTransferId = consoleService.promptForInt("Please enter transfer ID to view details (0 to cancel):");
+
+            if (requestedTransferId == 0) {
+                return;
+            }
+
+            //looping to for transferId
+            for (TransferDto transfer : transfers) {
+                if (transfer.getId() == requestedTransferId) {
+                    isTransferIdValid = true;
+                    break;
+                }
+            }
+            if (!isTransferIdValid) {
+                System.out.println("Invalid transfer ID. Please try again.");
+            } else {
+                break;
+            }
+        }
+
+        Transfer requestedTransfer;
+        try {
+            requestedTransfer = transferService.getCurrentUserTransferById(requestedTransferId);
+        } catch (Exception e) {
+            System.out.println("Unable to retrieve transfer. Please try again.");
+            return;
+        }
+
+        if (requestedTransfer != null) {
+            System.out.println("--------------------------------------------");
+            out.println("Transfer Details: ");
+            out.println("Transfer ID: " + requestedTransfer.getId());
+            out.println("From Account: " + requestedTransfer.getAccountFromId());
+            out.println("To Account: " + requestedTransfer.getAccountToId());
+            out.println("Type: " + requestedTransfer.getTransferTypeId());
+            out.println("Status: " + requestedTransfer.getTransferStatusId());
+            out.println("Amount: " + requestedTransfer.getAmount());
+            out.println("--------------------------------------------");
+        } else {
+            System.out.println("Unable to retrieve transfer. Please try again.");
+        }
     }
 
     private void viewPendingRequests() {
@@ -139,8 +205,14 @@ public class App {
 
                 BigDecimal yourBalanceAfterTransaction = userBalance.subtract(amount);
 
-                System.out.println("Id: " + transferUserId + " Amount: " + amount +  " Your Balance:  " +  yourBalanceAfterTransaction + " Users Amount: " + transactionBalance);
+                out.println("Id: " + transferUserId);
+                out.println("Amount: " + amount);
+                out.println("Your Balance:  " + yourBalanceAfterTransaction);
 
+                int accountFromId = accountService.getUserAccount(currentUser.getUser().getId()).getId();
+                int accountToId = accountService.getUserAccount(transferUserId).getId();
+
+                accountService.createTransaction(accountFromId, accountToId, amount);
             }
         }
     }
