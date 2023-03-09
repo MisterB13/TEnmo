@@ -3,8 +3,7 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transaction;
 import com.techelevator.util.BasicLogger;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
@@ -14,9 +13,14 @@ import java.math.BigDecimal;
 public class AccountService {
     private final String API_BASE_URL = "http://localhost:8080/account/";
     private final RestTemplate restTemplate = new RestTemplate();
+    public Object getUsernameByAccountId;
+    private String authToken;
 
     public AccountService() { }
 
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
     public Account getUserAccount(int userId) {
 
         Account account = null;
@@ -60,6 +64,33 @@ public class AccountService {
             BasicLogger.log(e.getMessage());
         }
         return success;
+    }
+
+    public Account getAccountByUserId(int userId) {
+        Account account = null;
+        try {
+            ResponseEntity<Account> response =
+                    restTemplate.exchange(API_BASE_URL + "accounts/user/" + userId,
+                            HttpMethod.GET, makeAuthEntity(), Account.class);
+            account = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            System.out.println("Failed to retrieve account");
+        }
+        return account;
+    }
+
+
+    public HttpEntity<Void> makeAuthEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(authToken);
+        return new HttpEntity<>(headers);
+    }
+
+    public HttpEntity<Account> makeAccountEntity(Account account) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(authToken);
+        return new HttpEntity<>(account, headers);
     }
 
 }

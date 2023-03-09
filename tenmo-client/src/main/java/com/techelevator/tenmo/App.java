@@ -115,62 +115,38 @@ public class App {
 
         for (TransferDto transfer : transfers) {
             int accountFromId = transfer.getAccountFrom().getId();
-            String accountFromUsername = transfer.getAccountFrom().getUserName();
             int accountToId = transfer.getAccountTo().getId();
-            String accountToUsername = transfer.getAccountTo().getUserName();
-
-            System.out.println(transfer.getId() + "\t\t"  + accountFromUsername + "/" +
-                    accountToUsername + "         " + transfer.getAmount());
-        }
-        System.out.println("---------");
-        System.out.println();
-
-        boolean isTransferIdValid = false;
-        int requestedTransferId;
-
-        while(true) {
-            requestedTransferId = consoleService.promptForInt("Please enter transfer ID to view details (0 to cancel):");
-
-            if (requestedTransferId == 0) {
-                return;
+            if (accountFromId == myAccount.getId()) {
+                String accountFromUsername = transfer.getAccountFrom().getUserName();
+                System.out.println(transfer.getId() + "\t\t" + "From: " + accountFromUsername + "         "
+                        + transfer.getAmount());
+            } else if (accountToId == myAccount.getId()) {
+                String accountToUsername = transfer.getAccountTo().getUserName();
+                System.out.println(transfer.getId() + "\t\t" +
+                        "To: " + accountToUsername + "         " + transfer.getAmount());
             }
+        }
+            System.out.println("---------");
+            System.out.println();
 
-            //looping to for transferId
-            for (TransferDto transfer : transfers) {
-                if (transfer.getId() == requestedTransferId) {
-                    isTransferIdValid = true;
-                    break;
+        int requestedTransferId = consoleService.promptForInt("Please enter transfer ID to view details (0 to cancel): ");
+
+        for (TransferDto transfer : transfers) {
+            if (transfer.getId() == requestedTransferId) {
+                    System.out.println("--------------------------------------------");
+                    out.println("Transfer Details: ");
+                    out.println("Transfer ID: " + transfer.getId());
+                    out.println("From Account: " + transfer.getAccountFrom().getId());
+                    out.println("To Account: " + transfer.getAccountTo().getId());
+//                out.println("Type: " + transfer.g);
+//                out.println("Status: " + transfer.g.getTransferStatusId());
+                    out.println("Amount: " + transfer.getAmount());
+                    out.println("--------------------------------------------");
                 }
             }
-            if (!isTransferIdValid) {
-                System.out.println("Invalid transfer ID. Please try again.");
-            } else {
-                break;
-            }
         }
 
-        Transfer requestedTransfer;
-        try {
-            requestedTransfer = transferService.getCurrentUserTransferById(requestedTransferId);
-        } catch (Exception e) {
-            System.out.println("Unable to retrieve transfer. Please try again.");
-            return;
-        }
 
-        if (requestedTransfer != null) {
-            System.out.println("--------------------------------------------");
-            out.println("Transfer Details: ");
-            out.println("Transfer ID: " + requestedTransfer.getId());
-            out.println("From Account: " + requestedTransfer.getAccountFromId());
-            out.println("To Account: " + requestedTransfer.getAccountToId());
-            out.println("Type: " + requestedTransfer.getTransferTypeId());
-            out.println("Status: " + requestedTransfer.getTransferStatusId());
-            out.println("Amount: " + requestedTransfer.getAmount());
-            out.println("--------------------------------------------");
-        } else {
-            System.out.println("Unable to retrieve transfer. Please try again.");
-        }
-    }
 
     private void viewPendingRequests() {
         // TODO Auto-generated method stub

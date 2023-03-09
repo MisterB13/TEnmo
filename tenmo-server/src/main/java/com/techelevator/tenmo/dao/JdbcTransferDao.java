@@ -29,7 +29,7 @@ public class JdbcTransferDao implements TransferDao{
     public Transfer getTransfer(int id) {
         Transfer transfer = null;
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfer" +
-                "WHERE transfer_id = ?";
+                " WHERE transfer_id = ?";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         while (results.next()) {

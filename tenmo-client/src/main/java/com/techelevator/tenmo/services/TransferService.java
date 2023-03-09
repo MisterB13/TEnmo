@@ -3,6 +3,8 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.dto.TransferDto;
 import com.techelevator.util.BasicLogger;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.ResourceAccessException;
@@ -20,6 +22,8 @@ public class TransferService {
     private final String API_BASE_URL = "http://localhost:8080/transfer/";
     private final RestTemplate restTemplate = new RestTemplate();
 
+    private String authToken;
+
     public TransferService() {
     }
 
@@ -36,10 +40,10 @@ public class TransferService {
     }
 
 
-    public Transfer getTransfer(int transferId) {
+    public Transfer getTransfer(int id) {
         Transfer transfer = null;
         try {
-            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId, HttpMethod.GET, HttpEntityService.createAuthEntity(), Transfer.class);
+            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + id, HttpMethod.GET, HttpEntityService.createAuthEntity(), Transfer.class);
             transfer = response.getBody();
 
         } catch (RestClientResponseException | ResourceAccessException e) {
@@ -79,13 +83,18 @@ public class TransferService {
         Transfer transfer = null;
         try {
             ResponseEntity<Transfer> response =
-                    restTemplate.exchange(API_BASE_URL + "transfers/my-transfers/" + transferId, HttpMethod.GET,
-                            HttpEntityService.createAuthEntity(), Transfer.class);
+                    restTemplate.exchange(API_BASE_URL + "transfers/my-transfers/" + transferId,
+                            HttpMethod.GET, makeAuthEntity(), Transfer.class);
 
             transfer = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             System.out.println("Transfer pull failed.");
         }
         return transfer;
+    }
+    public HttpEntity<Void> makeAuthEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(authToken);
+        return new HttpEntity<>(headers);
     }
 }
