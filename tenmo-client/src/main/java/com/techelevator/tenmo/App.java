@@ -136,10 +136,10 @@ public class App {
                     System.out.println("--------------------------------------------");
                     out.println("Transfer Details: ");
                     out.println("Transfer ID: " + transfer.getId());
-                    out.println("From Account: " + transfer.getAccountFrom().getId());
-                    out.println("To Account: " + transfer.getAccountTo().getId());
-//                out.println("Type: " + transfer.g);
-//                out.println("Status: " + transfer.g.getTransferStatusId());
+                    out.println("From Account: " + transfer.getAccountFrom().getUserName());
+                    out.println("To Account: " + transfer.getAccountTo().getUserName());
+                    out.println("Type: " + transfer.getTransferType());
+                    out.println("Status: " + transfer.getTransferStatus());
                     out.println("Amount: " + transfer.getAmount());
                     out.println("--------------------------------------------");
                 }

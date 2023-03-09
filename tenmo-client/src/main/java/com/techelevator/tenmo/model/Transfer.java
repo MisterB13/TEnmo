@@ -6,7 +6,9 @@ public class Transfer {
 
     private int Id;
     private int transferTypeId;
+//    private String transferType;
     private int transferStatusId;
+//    private String transferStatus;
     private int accountFromId;
     private int accountToId;
     private BigDecimal amount;
@@ -18,6 +20,8 @@ public class Transfer {
         transferStatusId = 2; //Approved = 2
         this.accountFromId = accountFromId;
         this.accountToId = accountToId;
+//        this.transferType = transferType;
+//        this.transferStatus = transferStatus;
         this.amount = amount;
     }
 

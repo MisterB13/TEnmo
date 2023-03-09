@@ -92,6 +92,30 @@ public class TransferService {
         }
         return transfer;
     }
+
+    public Transfer getTransferType(String transferType) {
+        Transfer transfer = null;
+        try {
+            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL, HttpMethod.GET, HttpEntityService.createAuthEntity(), Transfer.class);
+            transfer = response.getBody();
+
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return transfer;
+    }
+
+    public Transfer getTransferStatus(String transferStatus) {
+        Transfer transfer = null;
+        try {
+            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL, HttpMethod.GET, HttpEntityService.createAuthEntity(), Transfer.class);
+            transfer = response.getBody();
+
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return transfer;
+    }
     public HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authToken);
